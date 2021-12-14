@@ -840,18 +840,12 @@ void scanning_start(void) {
     };
 
     ret_code_t err_code = sd_ble_gap_scan_start(&m_scan_params, &m_scan_buffer);
-    if (err_code != NRF_ERROR_INVALID_STATE) {
-        // Ignore Invalid State responses. Occurs when stop is called although advertising is not running
-        APP_ERROR_CHECK(err_code);
-    }
+    APP_ERROR_CHECK(err_code);
 }
 
 void scanning_stop(void) {    
     ret_code_t err_code = sd_ble_gap_scan_stop();
-    if (err_code != NRF_ERROR_INVALID_STATE) {
-        // Ignore Invalid State responses. Occurs when stop is called although advertising is not running
-        APP_ERROR_CHECK(err_code);
-    }
+    APP_ERROR_CHECK(err_code);
 }
 
 void __attribute__((weak)) power_manage(void) {
