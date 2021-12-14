@@ -809,7 +809,7 @@ void __attribute__((weak)) initialize_app_timer (void) {
 /*******************************************************************************
  *   HELPER FUNCTIONS
  ******************************************************************************/
-void __attribute__((weak)) advertising_start(void) {
+void advertising_start(void) {
 
     uint32_t err_code = ble_advertising_start(&m_advertising, BLE_ADV_MODE_FAST);
 
@@ -819,17 +819,17 @@ void __attribute__((weak)) advertising_start(void) {
     }
 }
 
-void __attribute__((weak)) advertising_stop(void) {
-
+void advertising_stop(void) {
     uint32_t err_code = sd_ble_gap_adv_stop(m_advertising.adv_handle);
 
     if (err_code != NRF_ERROR_INVALID_STATE) {
         // Ignore Invalid State responses. Occurs when stop is called although advertising is not running
         APP_ERROR_CHECK(err_code);
     }
+    
 }
 
-void __attribute__((weak)) scanning_start(void) {
+void scanning_start(void) {
     static ble_gap_scan_params_t m_scan_params = {
         .active            = false, // passive scanning (no scan response)
         .interval          = MSEC_TO_UNITS(100, UNIT_0_625_MS), // interval 100 ms
@@ -840,7 +840,18 @@ void __attribute__((weak)) scanning_start(void) {
     };
 
     ret_code_t err_code = sd_ble_gap_scan_start(&m_scan_params, &m_scan_buffer);
-    APP_ERROR_CHECK(err_code);
+    if (err_code != NRF_ERROR_INVALID_STATE) {
+        // Ignore Invalid State responses. Occurs when stop is called although advertising is not running
+        APP_ERROR_CHECK(err_code);
+    }
+}
+
+void scanning_stop(void) {    
+    ret_code_t err_code = sd_ble_gap_scan_stop();
+    if (err_code != NRF_ERROR_INVALID_STATE) {
+        // Ignore Invalid State responses. Occurs when stop is called although advertising is not running
+        APP_ERROR_CHECK(err_code);
+    }
 }
 
 void __attribute__((weak)) power_manage(void) {

@@ -136,6 +136,8 @@ void advertising_start(void);
 void advertising_stop(void);
 // Start Scanning
 void scanning_start(void);
+// Stop Scanning
+void scanning_stop(void);
 // Softdevice-friendly sleep (WFE/WFI)
 void power_manage(void);
 
